@@ -29,7 +29,14 @@ const [categories, setCategories] = useState<Category[]>([])
       console.error("fetch categori hatası",error)
     }
   }
-
+  async function  deleteCategory(id:string) {
+    try {
+      await axios.delete(`/api/categories/${id}`)
+      fetchCategories()
+    } catch (error) {
+      console.error("fetch categori delete hatası",error)
+    }
+  }
   useEffect(() => {
     fetchCategories();
   },[])
@@ -55,7 +62,7 @@ const [categories, setCategories] = useState<Category[]>([])
             <TableCell>{category.description}</TableCell>
             <TableCell className="flex flex-row gap-2 text-right">
               <Button>Edit</Button>
-              <Button variant={"destructive"}>Delete</Button>
+              <Button onClick={() => deleteCategory(String(category.id))} variant={"destructive"}>Delete</Button>
             </TableCell>
           </TableRow>
         ))}
