@@ -13,16 +13,18 @@ import {
 } from "@/components/ui/table"
 import AddACategory from "@/components/AddACategory";
 import UpdateCategory from "@/components/UpdateCategory";
+
+
 type Category = {
-  id: number;
+  id: string;
   title: string;
-  description?: string; // description zorunlu değil
+  description: string;
 };
 
 
 export default function Home() {
   const [categories, setCategories] = useState<Category[]>([])
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
   async function fetchCategories() {
@@ -54,15 +56,15 @@ export default function Home() {
   }, [])
   return (
     <div className="container mx-auto">
-      <h1 className="text-3xl mt-4 font-semibold mb-8">Categories {selectedCategory} </h1>
+      <h1 className="text-3xl mt-4 font-semibold mb-8">Categories</h1>
 
       <AddACategory fetchCategories={fetchCategories} />
       {selectedCategory && (
         <UpdateCategory
-        category={selectedCategory}
-        fetchCategories={fetchCategories}
-        isOpen={isUpdateModalOpen}
-        onClose={()=>setIsUpdateModalOpen(false)}
+          category={selectedCategory}
+          fetchCategories={fetchCategories}
+          isOpen={isUpdateModalOpen}
+          onClose={() => setIsUpdateModalOpen(false)}
         />
       )}
       <Table>
@@ -82,7 +84,7 @@ export default function Home() {
               <TableCell>{category.title}</TableCell>
               <TableCell>{category.description}</TableCell>
               <TableCell className="flex flex-row gap-2 text-right">
-                <Button onClick={() => {setSelectedCategory(category.id); setIsUpdateModalOpen(true)}}>Edit</Button>
+                <Button onClick={() => { setSelectedCategory(category); setIsUpdateModalOpen(true) }}>Edit</Button>
                 <Button onClick={() => deleteCategory(String(category.id))} variant={"destructive"}>Delete</Button>
               </TableCell>
             </TableRow>
